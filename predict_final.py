@@ -1,3 +1,8 @@
+"""
+Code based on BreakfastPirate Forum post and forked from SRK
+author: workingloong
+date: 2016/12/21
+"""
 import csv
 import sys
 import datetime
@@ -177,7 +182,6 @@ def processData(in_file_name, cust_dict):
 	for row in csv.DictReader(in_file_name):
 		# use only the four months as specified by breakfastpirate #
 		if row['fecha_dato'] not in ['2015-01-28','2015-02-28','2015-03-28','2015-04-28','2015-05-28', '2015-06-28',
-									'2015-07-28','2015-08-28','2015-09-28','2015-10-28','2015-11-28','2015-12-28'
 									'2016-01-28','2016-02-28','2016-03-28','2016-04-28','2016-05-28', '2016-06-28']:
 			continue
 
@@ -230,26 +234,26 @@ def processData(in_file_name, cust_dict):
 						if diff < 0:diff = 0
 						x_vars_list.append(x_vars+prev_target_list1+ prev_target_list_5months+[sum(prev_target_list1),diff]) #prev_target_list[2]*prev_target_list[21]  + prev_target_04_list
 						y_vars_list.append(ind)
-		elif row['fecha_dato'] == '2015-12-28':
-			prev_target_list1 = cust_dict["11"].get(cust_id, [0]*22)
-			prev_target_list2 = cust_dict["10"].get(cust_id, [0]*22)
-			prev_target_list3 = cust_dict["09"].get(cust_id, [0]*22)
-			prev_target_list4 = cust_dict["08"].get(cust_id, [0]*22)
-			prev_target_list5 = cust_dict["07"].get(cust_id, [0]*22)
+		# elif row['fecha_dato'] == '2015-12-28':
+		# 	prev_target_list1 = cust_dict["11"].get(cust_id, [0]*22)
+		# 	prev_target_list2 = cust_dict["10"].get(cust_id, [0]*22)
+		# 	prev_target_list3 = cust_dict["09"].get(cust_id, [0]*22)
+		# 	prev_target_list4 = cust_dict["08"].get(cust_id, [0]*22)
+		# 	prev_target_list5 = cust_dict["07"].get(cust_id, [0]*22)
 
-			prev_months_targets = [prev_target_list1,prev_target_list2,prev_target_list3,prev_target_list4,prev_target_list5]
-			prev_target_list_5months=  listDotMultiply(prev_months_targets)
-			target_list = getTarget(row)
+		# 	prev_months_targets = [prev_target_list1,prev_target_list2,prev_target_list3,prev_target_list4,prev_target_list5]
+		# 	prev_target_list_5months=  listDotMultiply(prev_months_targets)
+		# 	target_list = getTarget(row)
 
-			new_products = [max(x1 - x2,0) for (x1, x2) in zip(target_list, prev_target_list1)] #purchase new product compared with last month
-			if sum(new_products) > 0:
-				for ind, prod in enumerate(new_products):
-					if prod>0:
-						assert len(prev_target_list1) == 22
-						diff = sum(prev_target_list1)-sum(prev_target_list2)
-						if diff < 0:diff = 0
-						x_vars_list.append(x_vars+prev_target_list1+ prev_target_list_5months+[sum(prev_target_list1),diff]) #prev_target_list[2]*prev_target_list[21]  + prev_target_04_list
-						y_vars_list.append(ind)
+		# 	new_products = [max(x1 - x2,0) for (x1, x2) in zip(target_list, prev_target_list1)] #purchase new product compared with last month
+		# 	if sum(new_products) > 0:
+		# 		for ind, prod in enumerate(new_products):
+		# 			if prod>0:
+		# 				assert len(prev_target_list1) == 22
+		# 				diff = sum(prev_target_list1)-sum(prev_target_list2)
+		# 				if diff < 0:diff = 0
+		# 				x_vars_list.append(x_vars+prev_target_list1+ prev_target_list_5months+[sum(prev_target_list1),diff]) #prev_target_list[2]*prev_target_list[21]  + prev_target_04_list
+		# 				y_vars_list.append(ind)
 
 	return x_vars_list, y_vars_list,cust_dict
 
@@ -262,9 +266,9 @@ def runXGB(train_X, train_y, seed_val=123):
 	param['silent'] = 1
 	param['num_class'] = 22
 	param['eval_metric'] = "mlogloss"
-	param['min_child_weight'] = 1
-	param['subsample'] = 0.85
-	param['colsample_bytree'] = 0.85
+	param['min_child_weight'] = 2
+	param['subsample'] = 0.875
+	param['colsample_bytree'] = 0.875
 	param['seed'] = seed_val
 	num_rounds = 140
 
