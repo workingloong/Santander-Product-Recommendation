@@ -1,2 +1,2 @@
 # Santander-Product-Recommendation
-Santander is challenging Kagglers to predict which products their existing customers will use in the next month based on their past behavior and that of similar customers.
+Santander is challenging Kagglers to predict which products their existing customers will use in the next month based on their past behavior and that of similar customers. The competition page is https://www.kaggle.com/c/santander-product-recommendation
